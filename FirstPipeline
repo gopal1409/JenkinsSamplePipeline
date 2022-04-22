@@ -1,15 +1,5 @@
 pipeline {
     agent any
-    stages {
-        stage('Build & test') {
-            steps {
-                echo 'testing'
-                echo 'building'
-            }
-        }
-        stage('Test') {
-            steps {pipeline {
-    agent any
     environment {
         NAME = 'john'
         LASTNAME = 'cena'
@@ -23,8 +13,23 @@ pipeline {
         }
         stage('Test') {
             steps {
-            echo 'testing'
+            sh 'echo "FAIL!"; exit 1'
             }
+            post {
+            always {
+                echo "i will execute"
+            }
+            success {
+                echo "i will get executed if it is sucess"
+            }
+            failure {
+                echo "i will only execute if it is failuire"
+            }
+            unstable {
+                echo " i will execute uis this test is unstalble"
+            }
+          }
+        
         }
         stage('Deploy') {
             steps {
@@ -33,21 +38,6 @@ pipeline {
               }
             timeout(time: 3, unit: 'SECONDS') {
                 sh 'sleep 3'
-            }
-            }
-        }
-    }
-}
-            echo 'testing'
-            }
-        }
-        stage('Deploy') {
-            steps {
-            retry(3) {
-                sh 'echo hello'
-              }
-            timeout(time: 3, unit: 'SECONDS') {
-                sh 'sleep 5'
             }
             }
         }
