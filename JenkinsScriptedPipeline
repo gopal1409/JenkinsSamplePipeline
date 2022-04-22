@@ -34,5 +34,10 @@ pipeline {
                 recordIssues(tools: [checkStyle(pattern: 'target/checkstyle-result.xml')])
             }
         }
+        stage('ansible prov'){
+            steps {
+               ansiblePlaybook credentialsId: 'ansible-jenkins', disableHostKeyChecking: true, inventory: 'dev.inv', playbook: 'tomcat.yml'
+            }
+        }
     }
 }
