@@ -15,8 +15,11 @@ pipeline {
         stage('Deploy') {
             steps {
             retry(3) {
-                sh "i am not goint to work :c"
+                sh 'echo hello'
               }
+            timeout(time: 3, unit: 'SECONDS') {
+                sh 'sleep 5'
+            }
             }
         }
     }
