@@ -1,37 +1,43 @@
-u- hosts: tomcat
-  become: yes
+- hosts: client
   tasks:
 
     - name: update
-      apt: update_cache=yes   
-      ignore_errors: yes 
-   
+      apt: update_cache=yes
+      ignore_errors: yes
+
     - name: Installating JDK.
       apt: name=default-jdk state=latest
 
     - name: Adding Group and user for Tomcat.
-      shell: groupadd tomcat && useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
-      
+      group:
+        name: tomcat
+        state: present
+    - name: add user
+      user:
+        name: tomcat
+        state: present
+        group: tomcat
     - name: Installating curl.
       apt: name=curl state=latest
-      
+
     - name: Downloading Apache Tomcat tar.
-      shell: wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.78/bin/apache-tomcat-8.5.78.tar.gz      
+      shell: wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.78/bin/apache-tomcat-8.5.78.tar.gz
       args:
         chdir: /tmp
     - name: Creating Apache Tomcat home directory.
-      command: mkdir /opt/tomcat
-      
+      file:
+        path: /opt/tomcat
+        state: directory
     - name: Extracting Apache Tomcat.
       shell: tar -xzvf /tmp/apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1
-      
+
     - name: Updating permission.
       command: "{{ item }}"
       with_items:
         - chown -R tomcat:tomcat /opt/tomcat
         - chmod -R g+r /opt/tomcat/conf
         - chmod g+x /opt/tomcat/conf
-                   
+
     - name: Creating service for Apache tomcat.
       file:
         path: /etc/systemd/system/tomcat.service
@@ -42,9 +48,9 @@ u- hosts: tomcat
       get_url:
         url: https://raw.githubusercontent.com/aftab70/Apache_Tomcat/master/tomcat_services
         dest: /etc/systemd/system/tomcat.service
- 
+
     - name: Deamon reload.
       command: systemctl daemon-reload
- 
+
     - name: Starting Apache Tomcat service.
       service: name=tomcat state=started
