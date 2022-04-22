@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+    tools {
+        maven "localMaven"
+    }
+    stages {
+        stage('checkout scm') {
+            steps {
+                echo "checkout"
+            }
+        }   
+    }
+}
