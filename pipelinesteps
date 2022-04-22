@@ -1,7 +1,5 @@
   #########git pvt repo###########
-  485  git clone https://github.com/gopal1409/springboot-chat-app.git
-  486  rm -rf springboot-chat-app/
-  487  git clone https://github.com/gopal1409/springboot-chat-app.git
+   487  git clone https://github.com/gopal1409/springboot-chat-app.git
   488  cd springboot-chat-app/
   489  rm -rf .git
   490  git init
