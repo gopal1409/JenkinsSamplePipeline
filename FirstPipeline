@@ -14,7 +14,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-            echo 'deploying'
+            retry(3) {
+                sh "i am not goint to work :c"
+              }
             }
         }
     }
