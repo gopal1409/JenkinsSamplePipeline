@@ -6,8 +6,13 @@ pipeline {
     stages {
         stage('checkout scm') {
             steps {
-                echo "checkout"
+                git credentialsId: 'github-token', url: 'https://github.com/gopal1409/springchat.git'
             }
         }   
+        stage('mvn build'){
+            steps {
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+        }
     }
 }
