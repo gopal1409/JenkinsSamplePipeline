@@ -8,7 +8,36 @@ pipeline {
             }
         }
         stage('Test') {
+            steps {pipeline {
+    agent any
+    environment {
+        NAME = 'john'
+        LASTNAME = 'cena'
+    }
+    stages {
+        stage('Build & test') {
             steps {
+                sh 'echo $NAME'
+                sh 'echo $LASTNAME'
+            }
+        }
+        stage('Test') {
+            steps {
+            echo 'testing'
+            }
+        }
+        stage('Deploy') {
+            steps {
+            retry(3) {
+                sh 'echo hello'
+              }
+            timeout(time: 3, unit: 'SECONDS') {
+                sh 'sleep 3'
+            }
+            }
+        }
+    }
+}
             echo 'testing'
             }
         }
